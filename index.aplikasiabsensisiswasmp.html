@@ -3,270 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMP HQ Mobile</title>
+    <title>Absensi Digital - SMP HQ</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --primary: #4f46e5;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
+        /* Reset & Base Mobile Optimization */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        html, body { 
+            overflow-x: hidden; /* Kunci agar tidak goyang kanan-kiri */
+            width: 100%;
+            position: relative;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { background: var(--bg); color: var(--text-main); overflow-x: hidden; padding-bottom: 80px; }
-
-        /* --- LOGIN PAGE --- */
-        #login-page {
-            position: fixed; inset: 0; background: white; z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px;
+        body { 
+            background: #f1f5f9; 
+            min-height: 100vh; 
+            padding: 10px; /* Padding kecil untuk HP */
         }
-        .login-box { width: 100%; max-width: 320px; text-align: center; }
-        .app-logo { width: 80px; height: 80px; background: var(--primary); border-radius: 22px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 800; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3); }
 
-        /* --- HEADER --- */
-        .top-bar {
-            background: var(--card); padding: 20px; position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        /* LOGIN STYLES */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1e40af, #10b981);
+            display: flex; align-items: center; justify-content: center; z-index: 9999;
+            padding: 20px;
         }
-        .top-bar h1 { font-size: 18px; font-weight: 700; color: var(--primary); }
-
-        /* --- NAVIGATION --- */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; height: 70px;
-            background: white; display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid #f1f5f9; z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+        .login-card {
+            background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 350px;
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .nav-item { border: none; background: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 600; cursor: pointer; }
-        .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 22px; margin-bottom: 4px; }
 
-        /* --- SCREENS --- */
-        .screen { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
-        .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* MAIN CONTAINER */
+        .container { 
+            width: 100%;
+            max-width: 600px; /* Ukuran ideal HP-Tablet */
+            margin: auto; 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 15px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
 
-        /* --- UI COMPONENTS --- */
-        .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid #f1f5f9; }
-        .input-field { width: 100%; background: #f1f5f9; border: none; padding: 15px; border-radius: 14px; margin-bottom: 15px; font-size: 16px; outline: none; transition: 0.2s; }
-        .input-field:focus { background: #eef2ff; box-shadow: inset 0 0 0 2px var(--primary); }
+        .header h1 { color: #1e3a8a; font-size: 20px; margin-top: 10px; }
+        .header p { font-size: 12px; color: #64748b; }
+
+        /* FORM STYLES */
+        .form-box { background: #f8fafc; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-bottom: 5px; }
         
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); }
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1.5px solid #cbd5e1; 
+            border-radius: 10px; 
+            font-size: 16px; /* Font size 16px mencegah auto-zoom di iPhone */
+            outline: none; 
+        }
+
+        .tanggal-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 5px; 
+        }
+
+        .btn { 
+            width: 100%; 
+            border: none; 
+            border-radius: 10px; 
+            padding: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 10px;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-danger { background: #ef4444; color: white; font-size: 12px; padding: 8px; }
+
+        /* REKAP / STATS */
+        .rekap { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* 2 kolom di HP */
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+        .card { padding: 12px; border-radius: 12px; color: white; text-align: center; }
+        .card h4 { font-size: 12px; opacity: 0.9; }
+        .card h2 { font-size: 20px; }
+        .bg-hadir { background: #10b981; } .bg-izin { background: #f59e0b; }
+        .bg-sakit { background: #3b82f6; } .bg-alfa { background: #ef4444; }
+
+        /* TABLE WRAPPER (Sangat Penting untuk HP) */
+        .table-scroll-area {
+            width: 100%;
+            overflow-x: auto; /* Scroll hanya pada area tabel */
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
         
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .stat-item { padding: 15px; border-radius: 18px; color: white; }
-        
-        .list-card { display: flex; align-items: center; padding: 15px; background: white; border-radius: 16px; margin-bottom: 10px; border: 1px solid #f1f5f9; }
-        .list-avatar { width: 45px; height: 45px; border-radius: 12px; background: #eef2ff; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 700; color: var(--primary); }
-        .list-info { flex: 1; }
-        .list-info h4 { font-size: 14px; margin-bottom: 2px; }
-        .list-info p { font-size: 11px; color: var(--text-muted); }
-        
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; /* Paksa tabel punya lebar minimal agar info tidak tumpang tindih */ }
+        th { background: #f1f5f9; padding: 10px; font-size: 11px; text-align: left; }
+        td { padding: 10px; font-size: 12px; border-bottom: 1px solid #f1f5f9; }
+
+        .day-separator { background: #f1f5f9 !important; font-weight: 700; text-align: center; color: #1e3a8a; font-size: 10px; }
+        .status-pill { padding: 3px 8px; border-radius: 10px; font-size: 10px; color: white; font-weight: bold; }
+
+        .footer-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column; /* Tumpuk tombol di HP */
+            gap: 10px;
+        }
+
+        .logo { width: 50px; height: 50px; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border-radius: 12px; margin: 0 auto; }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
-    <div id="login-page">
-        <div class="login-box">
-            <div class="app-logo">HQ</div>
-            <h2 style="margin-bottom: 8px;">Selamat Datang</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Presensi Digital SMP HQ</p>
-            <input type="text" id="user" class="input-field" placeholder="Username">
-            <input type="password" id="pass" class="input-field" placeholder="Password">
-            <button class="btn-main" onclick="handleLogin()">Masuk</button>
+<div id="login-overlay">
+    <div class="login-card">
+        <div class="logo">HQ</div>
+        <h2 style="margin: 10px 0;">Digital Absensi</h2>
+        <input type="text" id="username" class="login-input" placeholder="Username" style="margin-bottom:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
+        <input type="password" id="password" class="login-input" placeholder="Password" style="margin-bottom:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
+        <button class="btn btn-primary" onclick="cekLogin()">Masuk</button>
+        <p id="pesan-error" style="color: #ef4444; margin-top: 10px; display: none; font-size: 11px;">Username/Password salah!</p>
+    </div>
+</div>
+
+<div id="main-app" style="display:none;">
+    <div class="container">
+        <div style="text-align: right;">
+            <button onclick="logout()" style="color:#ef4444; border:none; background:none; font-size:11px; font-weight:bold;">LOGOUT</button>
+        </div>
+        
+        <div class="header" style="text-align: center; margin-bottom: 20px;">
+            <div class="logo">HQ</div>
+            <h1>Absensi Digital</h1>
+            <p>SMP Hamalatul Quran</p>
+        </div>
+
+        <div class="form-box">
+            <div class="input-group">
+                <label>Nama Siswa</label>
+                <input type="text" id="nama" placeholder="Ketik nama...">
+            </div>
+            <div class="input-group">
+                <label>Kelas</label>
+                <select id="kelas">
+                    <option value="">Pilih Kelas...</option>
+                    <option>Kelas 7</option><option>Kelas 8</option><option>Kelas 9</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Tanggal</label>
+                <div class="tanggal-grid">
+                    <input type="number" id="tgl" placeholder="DD">
+                    <input type="number" id="bln" placeholder="MM">
+                    <input type="number" id="thn" placeholder="YYYY">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Status</label>
+                <select id="status">
+                    <option value="Hadir">Hadir</option>
+                    <option value="Izin">Izin</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Alfa">Alfa</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="tambahData()">SIMPAN DATA</button>
+        </div>
+
+        <div class="rekap">
+            <div class="card bg-hadir"><h4>Hadir</h4><h2 id="countHadir">0</h2></div>
+            <div class="card bg-izin"><h4>Izin</h4><h2 id="countIzin">0</h2></div>
+            <div class="card bg-sakit"><h4>Sakit</h4><h2 id="countSakit">0</h2></div>
+            <div class="card bg-alfa"><h4>Alfa</h4><h2 id="countAlfa">0</h2></div>
+        </div>
+
+        <h3 style="font-size: 14px; margin-bottom: 10px;">Riwayat Absensi</h3>
+        <div class="table-scroll-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Kelas</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+
+        <div class="footer-actions">
+            <p style="font-size: 12px; text-align: center;">Total: <span id="total" style="font-weight:bold;">0</span> Data</p>
+            <button class="btn btn-success" onclick="downloadPDF()">Download PDF</button>
+            <button class="btn btn-danger" onclick="resetSemuaData()">Hapus Semua Data</button>
         </div>
     </div>
+</div>
 
-    <!-- MAIN APP -->
-    <div id="main-app" style="display:none;">
-        <div class="top-bar">
-            <h1>SMP Hamalatul Quran</h1>
-            <div style="width: 35px; height: 35px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">AD</div>
-        </div>
+<script>
+    let dataAbsensi = JSON.parse(localStorage.getItem("absensi_hq")) || [];
 
-        <!-- SCREEN: HOME -->
-        <div id="home" class="screen active">
-            <h3 style="margin-bottom: 15px;">Ringkasan Absensi</h3>
-            <div class="stat-grid">
-                <div class="stat-item" style="background: #10b981;">
-                    <small>Hadir</small><h2 id="s-hadir">0</h2>
-                </div>
-                <div class="stat-item" style="background: #3b82f6;">
-                    <small>Sakit</small><h2 id="s-sakit">0</h2>
-                </div>
-                <div class="stat-item" style="background: #f59e0b;">
-                    <small>Izin</small><h2 id="s-izin">0</h2>
-                </div>
-                <div class="stat-item" style="background: #ef4444;">
-                    <small>Alfa</small><h2 id="s-alfa">0</h2>
-                </div>
-            </div>
-            <h3 style="margin-bottom: 15px;">Aktivitas Terbaru</h3>
-            <div id="recent-list"></div>
-        </div>
+    function cekLogin() {
+        const u = document.getElementById("username").value;
+        const p = document.getElementById("password").value;
+        if (u === "admin" && p === "admin123") {
+            sessionStorage.setItem("isLoggedIn", "true");
+            tampilkanApp();
+        } else {
+            document.getElementById("pesan-error").style.display = "block";
+        }
+    }
 
-        <!-- SCREEN: INPUT -->
-        <div id="input" class="screen">
-            <div class="card">
-                <h3 style="margin-bottom: 15px;">Input Presensi</h3>
-                <label style="font-size: 12px; font-weight: 600; color: var(--text-muted);">NAMA LENGKAP</label>
-                <input type="text" id="inp-nama" class="input-field" placeholder="Contoh: Ahmad Fauzi">
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div>
-                        <label style="font-size: 12px; font-weight: 600; color: var(--text-muted);">KELAS</label>
-                        <select id="inp-kelas" class="input-field">
-                            <option>Kelas 7</option><option>Kelas 8</option><option>Kelas 9</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-size: 12px; font-weight: 600; color: var(--text-muted);">STATUS</label>
-                        <select id="inp-status" class="input-field">
-                            <option>Hadir</option><option>Izin</option><option>Sakit</option><option>Alfa</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn-main" onclick="saveData()">Simpan Data</button>
-            </div>
-        </div>
+    function tampilkanApp() {
+        if (sessionStorage.getItem("isLoggedIn") === "true") {
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("main-app").style.display = "block";
+            renderTable();
+        }
+    }
 
-        <!-- SCREEN: DATA -->
-        <div id="data" class="screen">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3>Data Seluruh Siswa</h3>
-                <button onclick="downloadPDF()" style="background: none; border: none; color: var(--primary); font-weight: bold; font-size: 12px;">Cetak PDF</button>
-            </div>
-            <div id="full-list"></div>
-        </div>
+    function logout() {
+        sessionStorage.removeItem("isLoggedIn");
+        location.reload();
+    }
 
-        <!-- SCREEN: SETTINGS -->
-        <div id="settings" class="screen">
-            <div class="card">
-                <h3 style="margin-bottom: 20px;">Pengaturan</h3>
-                <button class="btn-main" style="background: #f1f5f9; color: #ef4444; margin-bottom: 10px;" onclick="resetData()">Hapus Semua Data</button>
-                <button class="btn-main" style="background: #f1f5f9; color: var(--text-main);" onclick="logout()">Keluar Aplikasi</button>
-            </div>
-        </div>
+    window.onload = () => {
+        if (sessionStorage.getItem("isLoggedIn") === "true") tampilkanApp();
+        const d = new Date();
+        document.getElementById('tgl').value = d.getDate();
+        document.getElementById('bln').value = d.getMonth() + 1;
+        document.getElementById('thn').value = d.getFullYear();
+    };
 
-        <!-- BOTTOM NAV -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="switchScreen('home', this)">
-                <span class="nav-icon">🏠</span><span>Beranda</span>
-            </button>
-            <button class="nav-item" onclick="switchScreen('input', this)">
-                <span class="nav-icon">📝</span><span>Absen</span>
-            </button>
-            <button class="nav-item" onclick="switchScreen('data', this)">
-                <span class="nav-icon">📊</span><span>Data</span>
-            </button>
-            <button class="nav-item" onclick="switchScreen('settings', this)">
-                <span class="nav-icon">⚙️</span><span>Opsi</span>
-            </button>
-        </nav>
-    </div>
+    function tambahData() {
+        const nama = document.getElementById("nama").value;
+        const kelas = document.getElementById("kelas").value;
+        const tgl = document.getElementById("tgl").value;
+        const bln = document.getElementById("bln").value;
+        const thn = document.getElementById("thn").value;
+        const status = document.getElementById("status").value;
 
-    <script>
-        let db = JSON.parse(localStorage.getItem('absensi_db')) || [];
+        if (!nama || !kelas || !tgl) { alert("Lengkapi data!"); return; }
 
-        function handleLogin() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            if(u === 'admin' && p === 'admin123') {
-                document.getElementById('login-page').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                renderAll();
-            } else {
-                alert('Login Gagal!');
+        const formatTgl = `${tgl.toString().padStart(2,'0')}-${bln.toString().padStart(2,'0')}-${thn}`;
+        dataAbsensi.push({ id: Date.now(), nama, kelas, formatTgl, status });
+        localStorage.setItem("absensi_hq", JSON.stringify(dataAbsensi));
+        document.getElementById("nama").value = "";
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById("tbody");
+        tbody.innerHTML = "";
+        let counts = { Hadir: 0, Izin: 0, Sakit: 0, Alfa: 0 };
+        let lastDate = "";
+
+        dataAbsensi.sort((a,b) => b.id - a.id).forEach((item, index) => {
+            if (lastDate !== item.formatTgl) {
+                const sep = tbody.insertRow();
+                sep.innerHTML = `<td colspan="5" class="day-separator">TANGGAL: ${item.formatTgl}</td>`;
+                lastDate = item.formatTgl;
             }
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td><b>${item.nama}</b></td>
+                <td>${item.kelas}</td>
+                <td><span class="status-pill bg-${item.status.toLowerCase()}">${item.status}</span></td>
+                <td><button onclick="hapusData(${item.id})" style="border:none; background:none; color:red; font-size:10px;">Hapus</button></td>
+            `;
+            counts[item.status]++;
+        });
+
+        document.getElementById("countHadir").innerText = counts.Hadir;
+        document.getElementById("countIzin").innerText = counts.Izin;
+        document.getElementById("countSakit").innerText = counts.Sakit;
+        document.getElementById("countAlfa").innerText = counts.Alfa;
+        document.getElementById("total").innerText = dataAbsensi.length;
+    }
+
+    function hapusData(id) {
+        if(confirm("Hapus data?")) {
+            dataAbsensi = dataAbsensi.filter(x => x.id !== id);
+            localStorage.setItem("absensi_hq", JSON.stringify(dataAbsensi));
+            renderTable();
         }
+    }
 
-        function switchScreen(screenId, btn) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            btn.classList.add('active');
+    function resetSemuaData() {
+        if(confirm("Reset semua?")) {
+            dataAbsensi = [];
+            localStorage.removeItem("absensi_hq");
+            renderTable();
         }
+    }
 
-        function saveData() {
-            const nama = document.getElementById('inp-nama').value;
-            const kelas = document.getElementById('inp-kelas').value;
-            const status = document.getElementById('inp-status').value;
-            const tgl = new Date().toLocaleDateString('id-ID');
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Laporan Absensi SMP HQ", 14, 15);
+        const rows = dataAbsensi.map((x, i) => [i+1, x.nama, x.kelas, x.formatTgl, x.status]);
+        doc.autoTable({ head: [['No', 'Nama', 'Kelas', 'Tanggal', 'Status']], body: rows, startY: 20 });
+        doc.save("Absensi.pdf");
+    }
+</script>
 
-            if(!nama) return alert('Nama harus diisi!');
-
-            db.push({ id: Date.now(), nama, kelas, status, tgl });
-            localStorage.setItem('absensi_db', JSON.stringify(db));
-            
-            document.getElementById('inp-nama').value = '';
-            alert('Berhasil disimpan!');
-            renderAll();
-            switchScreen('home', document.querySelectorAll('.nav-item')[0]);
-        }
-
-        function renderAll() {
-            const homeList = document.getElementById('recent-list');
-            const dataList = document.getElementById('full-list');
-            homeList.innerHTML = '';
-            dataList.innerHTML = '';
-
-            let stats = { Hadir: 0, Sakit: 0, Izin: 0, Alfa: 0 };
-
-            db.slice().reverse().forEach((item, index) => {
-                const card = `
-                    <div class="list-card">
-                        <div class="list-avatar">${item.nama.charAt(0)}</div>
-                        <div class="list-info">
-                            <h4>${item.nama}</h4>
-                            <p>${item.kelas} • ${item.tgl}</p>
-                        </div>
-                        <span class="badge" style="background: ${getColor(item.status)}20; color: ${getColor(item.status)}">
-                            ${item.status}
-                        </span>
-                    </div>
-                `;
-                if(index < 5) homeList.innerHTML += card;
-                dataList.innerHTML += card;
-                stats[item.status]++;
-            });
-
-            document.getElementById('s-hadir').innerText = stats.Hadir;
-            document.getElementById('s-sakit').innerText = stats.Sakit;
-            document.getElementById('s-izin').innerText = stats.Izin;
-            document.getElementById('s-alfa').innerText = stats.Alfa;
-        }
-
-        function getColor(s) {
-            return s === 'Hadir' ? '#10b981' : s === 'Sakit' ? '#3b82f6' : s === 'Izin' ? '#f59e0b' : '#ef4444';
-        }
-
-        function resetData() {
-            if(confirm('Hapus semua data?')) {
-                db = [];
-                localStorage.removeItem('absensi_db');
-                renderAll();
-            }
-        }
-
-        function logout() { location.reload(); }
-
-        function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text("Laporan Absensi SMP HQ", 14, 20);
-            const rows = db.map((x, i) => [i+1, x.nama, x.kelas, x.tgl, x.status]);
-            doc.autoTable({ head: [['No', 'Nama', 'Kelas', 'Tanggal', 'Status']], body: rows, startY: 25 });
-            doc.save("Laporan_Absensi.pdf");
-        }
-    </script>
 </body>
 </html>
