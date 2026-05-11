@@ -3,320 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Absensi Digital - SMP HQ</title>
+    <title>HQ Mobile Vertical</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Reset & Base Mobile Optimization */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        
-        html, body { 
-            overflow-x: hidden; /* Kunci agar tidak goyang kanan-kiri */
-            width: 100%;
-            position: relative;
+        :root {
+            --primary: #4f46e5;
+            --bg: #f8fafc;
+            --text: #1e293b;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
         body { 
-            background: #f1f5f9; 
-            min-height: 100vh; 
-            padding: 10px; /* Padding kecil untuk HP */
+            background: var(--bg);
+            color: var(--text);
+            padding: 15px;
         }
 
-        /* LOGIN STYLES */
-        #login-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1e40af, #10b981);
-            display: flex; align-items: center; justify-content: center; z-index: 9999;
+        .brand-section {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 10px;
+        }
+        .brand-section h1 { font-size: 20px; font-weight: 800; color: var(--primary); }
+        .brand-section p { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+
+        /* Form Menurun Ke Bawah */
+        .form-group {
+            background: white;
             padding: 20px;
-        }
-        .login-card {
-            background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 350px;
-            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        /* MAIN CONTAINER */
-        .container { 
-            width: 100%;
-            max-width: 600px; /* Ukuran ideal HP-Tablet */
-            margin: auto; 
-            background: #fff; 
-            border-radius: 20px; 
-            padding: 15px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
 
-        .header h1 { color: #1e3a8a; font-size: 20px; margin-top: 10px; }
-        .header p { font-size: 12px; color: #64748b; }
+        .field { margin-bottom: 15px; }
+        .field:last-child { margin-bottom: 0; }
 
-        /* FORM STYLES */
-        .form-box { background: #f8fafc; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .input-group { margin-bottom: 12px; }
-        .input-group label { font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-bottom: 5px; }
+        .label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: #94a3b8; 
+            margin-bottom: 6px; 
+            display: block;
+            padding-left: 4px;
+        }
         
-        input, select { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1.5px solid #cbd5e1; 
-            border-radius: 10px; 
-            font-size: 16px; /* Font size 16px mencegah auto-zoom di iPhone */
-            outline: none; 
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            font-size: 16px; /* 16px mencegah zoom otomatis di iPhone */
+            background: #f8fafc;
+            color: var(--text);
+            -webkit-appearance: none; /* Menghilangkan style default HP */
         }
 
-        .tanggal-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; 
-            gap: 5px; 
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: white;
+            outline: none;
         }
 
-        .btn { 
-            width: 100%; 
-            border: none; 
-            border-radius: 10px; 
-            padding: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
+        .btn-save {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
             margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-danger { background: #ef4444; color: white; font-size: 12px; padding: 8px; }
 
-        /* REKAP / STATS */
-        .rekap { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; /* 2 kolom di HP */
-            gap: 10px; 
-            margin-bottom: 20px; 
+        /* List Data Menurun */
+        .history-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            padding-left: 5px;
         }
-        .card { padding: 12px; border-radius: 12px; color: white; text-align: center; }
-        .card h4 { font-size: 12px; opacity: 0.9; }
-        .card h2 { font-size: 20px; }
-        .bg-hadir { background: #10b981; } .bg-izin { background: #f59e0b; }
-        .bg-sakit { background: #3b82f6; } .bg-alfa { background: #ef4444; }
 
-        /* TABLE WRAPPER (Sangat Penting untuk HP) */
-        .table-scroll-area {
-            width: 100%;
-            overflow-x: auto; /* Scroll hanya pada area tabel */
-            -webkit-overflow-scrolling: touch;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
+        .entry-card {
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
+
+        .entry-name { font-weight: 700; font-size: 15px; display: block; margin-bottom: 4px; }
+        .entry-date { font-size: 12px; color: #64748b; margin-bottom: 8px; display: block; }
         
-        table { width: 100%; border-collapse: collapse; min-width: 500px; /* Paksa tabel punya lebar minimal agar info tidak tumpang tindih */ }
-        th { background: #f1f5f9; padding: 10px; font-size: 11px; text-align: left; }
-        td { padding: 10px; font-size: 12px; border-bottom: 1px solid #f1f5f9; }
-
-        .day-separator { background: #f1f5f9 !important; font-weight: 700; text-align: center; color: #1e3a8a; font-size: 10px; }
-        .status-pill { padding: 3px 8px; border-radius: 10px; font-size: 10px; color: white; font-weight: bold; }
-
-        .footer-actions {
-            margin-top: 20px;
+        .entry-footer {
             display: flex;
-            flex-direction: column; /* Tumpuk tombol di HP */
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 10px;
+            margin-top: 5px;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .Hadir { background: #dcfce7; color: #166534; }
+        .Izin { background: #fef3c7; color: #92400e; }
+        .Sakit { background: #dbeafe; color: #1e40af; }
+        .Alfa { background: #fee2e2; color: #991b1b; }
+
+        .btn-del {
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            background: none;
+        }
+
+        .bottom-actions {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
         }
-
-        .logo { width: 50px; height: 50px; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border-radius: 12px; margin: 0 auto; }
+        .btn-outline {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            font-weight: 700;
+            color: #64748b;
+        }
+        .btn-pdf {
+            border-color: #10b981;
+            color: #10b981;
+        }
     </style>
 </head>
 <body>
 
-<div id="login-overlay">
-    <div class="login-card">
-        <div class="logo">HQ</div>
-        <h2 style="margin: 10px 0;">Digital Absensi</h2>
-        <input type="text" id="username" class="login-input" placeholder="Username" style="margin-bottom:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
-        <input type="password" id="password" class="login-input" placeholder="Password" style="margin-bottom:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
-        <button class="btn btn-primary" onclick="cekLogin()">Masuk</button>
-        <p id="pesan-error" style="color: #ef4444; margin-top: 10px; display: none; font-size: 11px;">Username/Password salah!</p>
+    <div class="brand-section">
+        <h1>SMP Hamalatul Quran</h1>
+        <p>Input Presensi Siswa</p>
     </div>
-</div>
 
-<div id="main-app" style="display:none;">
-    <div class="container">
-        <div style="text-align: right;">
-            <button onclick="logout()" style="color:#ef4444; border:none; background:none; font-size:11px; font-weight:bold;">LOGOUT</button>
-        </div>
-        
-        <div class="header" style="text-align: center; margin-bottom: 20px;">
-            <div class="logo">HQ</div>
-            <h1>Absensi Digital</h1>
-            <p>SMP Hamalatul Quran</p>
+    <div class="form-group">
+        <div class="field">
+            <label class="label">Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Ketik nama siswa...">
         </div>
 
-        <div class="form-box">
-            <div class="input-group">
-                <label>Nama Siswa</label>
-                <input type="text" id="nama" placeholder="Ketik nama...">
-            </div>
-            <div class="input-group">
-                <label>Kelas</label>
-                <select id="kelas">
-                    <option value="">Pilih Kelas...</option>
-                    <option>Kelas 7</option><option>Kelas 8</option><option>Kelas 9</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Tanggal</label>
-                <div class="tanggal-grid">
-                    <input type="number" id="tgl" placeholder="DD">
-                    <input type="number" id="bln" placeholder="MM">
-                    <input type="number" id="thn" placeholder="YYYY">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Status</label>
-                <select id="status">
-                    <option value="Hadir">Hadir</option>
-                    <option value="Izin">Izin</option>
-                    <option value="Sakit">Sakit</option>
-                    <option value="Alfa">Alfa</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="tambahData()">SIMPAN DATA</button>
+        <div class="field">
+            <label class="label">Hari</label>
+            <select id="hari">
+                <option>Senin</option><option>Selasa</option><option>Rabu</option>
+                <option>Kamis</option><option>Jumat</option><option>Sabtu</option><option>Ahad</option>
+            </select>
         </div>
 
-        <div class="rekap">
-            <div class="card bg-hadir"><h4>Hadir</h4><h2 id="countHadir">0</h2></div>
-            <div class="card bg-izin"><h4>Izin</h4><h2 id="countIzin">0</h2></div>
-            <div class="card bg-sakit"><h4>Sakit</h4><h2 id="countSakit">0</h2></div>
-            <div class="card bg-alfa"><h4>Alfa</h4><h2 id="countAlfa">0</h2></div>
+        <div class="field">
+            <label class="label">Tanggal</label>
+            <select id="tgl_hari"></select>
         </div>
 
-        <h3 style="font-size: 14px; margin-bottom: 10px;">Riwayat Absensi</h3>
-        <div class="table-scroll-area">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Kelas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody"></tbody>
-            </table>
+        <div class="field">
+            <label class="label">Bulan</label>
+            <select id="bln_hari">
+                <option>Januari</option><option>Februari</option><option>Maret</option><option>April</option>
+                <option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option>
+                <option>September</option><option>Oktober</option><option>November</option><option>Desember</option>
+            </select>
         </div>
 
-        <div class="footer-actions">
-            <p style="font-size: 12px; text-align: center;">Total: <span id="total" style="font-weight:bold;">0</span> Data</p>
-            <button class="btn btn-success" onclick="downloadPDF()">Download PDF</button>
-            <button class="btn btn-danger" onclick="resetSemuaData()">Hapus Semua Data</button>
+        <div class="field">
+            <label class="label">Tahun</label>
+            <input type="number" id="thn_hari" value="2026">
         </div>
+
+        <div class="field">
+            <label class="label">Status Kehadiran</label>
+            <select id="status">
+                <option>Hadir</option><option>Izin</option><option>Sakit</option><option>Alfa</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label class="label">Keterangan Tambahan</label>
+            <textarea id="keterangan" rows="2" placeholder="Contoh: Sakit Flu / Izin Umroh"></textarea>
+        </div>
+
+        <button class="btn-save" onclick="tambahData()">SIMPAN DATA</button>
     </div>
-</div>
+
+    <h2 class="history-title">Riwayat Terbaru</h2>
+    <div id="list-container">
+        <!-- Data muncul di sini -->
+    </div>
+
+    <div class="bottom-actions">
+        <button class="btn-outline btn-pdf" onclick="eksporPDF()">📄 CETAK PDF</button>
+        <button class="btn-outline" onclick="resetData()">🗑️ HAPUS SEMUA DATA</button>
+    </div>
 
 <script>
-    let dataAbsensi = JSON.parse(localStorage.getItem("absensi_hq")) || [];
+    let db = JSON.parse(localStorage.getItem("db_hq_vertical")) || [];
 
-    function cekLogin() {
-        const u = document.getElementById("username").value;
-        const p = document.getElementById("password").value;
-        if (u === "admin" && p === "admin123") {
-            sessionStorage.setItem("isLoggedIn", "true");
-            tampilkanApp();
-        } else {
-            document.getElementById("pesan-error").style.display = "block";
-        }
+    // Dropdown Tanggal 1-31
+    const tglSelect = document.getElementById('tgl_hari');
+    for(let i=1; i<=31; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerHTML = i;
+        tglSelect.appendChild(opt);
     }
-
-    function tampilkanApp() {
-        if (sessionStorage.getItem("isLoggedIn") === "true") {
-            document.getElementById("login-overlay").style.display = "none";
-            document.getElementById("main-app").style.display = "block";
-            renderTable();
-        }
-    }
-
-    function logout() {
-        sessionStorage.removeItem("isLoggedIn");
-        location.reload();
-    }
-
-    window.onload = () => {
-        if (sessionStorage.getItem("isLoggedIn") === "true") tampilkanApp();
-        const d = new Date();
-        document.getElementById('tgl').value = d.getDate();
-        document.getElementById('bln').value = d.getMonth() + 1;
-        document.getElementById('thn').value = d.getFullYear();
-    };
 
     function tambahData() {
-        const nama = document.getElementById("nama").value;
-        const kelas = document.getElementById("kelas").value;
-        const tgl = document.getElementById("tgl").value;
-        const bln = document.getElementById("bln").value;
-        const thn = document.getElementById("thn").value;
+        const nama = document.getElementById("nama").value.trim();
+        const hari = document.getElementById("hari").value;
+        const tgl = document.getElementById("tgl_hari").value;
+        const bln = document.getElementById("bln_hari").value;
+        const thn = document.getElementById("thn_hari").value;
         const status = document.getElementById("status").value;
+        const ket = document.getElementById("keterangan").value.trim() || "-";
 
-        if (!nama || !kelas || !tgl) { alert("Lengkapi data!"); return; }
+        if (!nama) return alert("Nama tidak boleh kosong!");
 
-        const formatTgl = `${tgl.toString().padStart(2,'0')}-${bln.toString().padStart(2,'0')}-${thn}`;
-        dataAbsensi.push({ id: Date.now(), nama, kelas, formatTgl, status });
-        localStorage.setItem("absensi_hq", JSON.stringify(dataAbsensi));
+        const tglLengkap = `${tgl} ${bln} ${thn}`;
+        db.push({ id: Date.now(), nama, hari, tgl: tglLengkap, status, ket });
+        localStorage.setItem("db_hq_vertical", JSON.stringify(db));
+        
         document.getElementById("nama").value = "";
-        renderTable();
+        document.getElementById("keterangan").value = "";
+        render();
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
-    function renderTable() {
-        const tbody = document.getElementById("tbody");
-        tbody.innerHTML = "";
-        let counts = { Hadir: 0, Izin: 0, Sakit: 0, Alfa: 0 };
-        let lastDate = "";
+    function render() {
+        const container = document.getElementById("list-container");
+        container.innerHTML = "";
+        const sorted = [...db].sort((a,b) => b.id - a.id);
 
-        dataAbsensi.sort((a,b) => b.id - a.id).forEach((item, index) => {
-            if (lastDate !== item.formatTgl) {
-                const sep = tbody.insertRow();
-                sep.innerHTML = `<td colspan="5" class="day-separator">TANGGAL: ${item.formatTgl}</td>`;
-                lastDate = item.formatTgl;
-            }
-            const row = tbody.insertRow();
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td><b>${item.nama}</b></td>
-                <td>${item.kelas}</td>
-                <td><span class="status-pill bg-${item.status.toLowerCase()}">${item.status}</span></td>
-                <td><button onclick="hapusData(${item.id})" style="border:none; background:none; color:red; font-size:10px;">Hapus</button></td>
+        if(sorted.length === 0) {
+            container.innerHTML = `<p style="text-align:center; font-size:12px; color:#94a3b8; padding:20px;">Belum ada data</p>`;
+            return;
+        }
+
+        sorted.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "entry-card";
+            card.style.borderLeftColor = getWarna(item.status);
+            card.innerHTML = `
+                <span class="entry-name">${item.nama}</span>
+                <span class="entry-date">${item.hari}, ${item.tgl}</span>
+                <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Ket: ${item.ket}</div>
+                <div class="entry-footer">
+                    <span class="badge ${item.status}">${item.status}</span>
+                    <button class="btn-del" onclick="hapus(${item.id})">HAPUS</button>
+                </div>
             `;
-            counts[item.status]++;
+            container.appendChild(card);
         });
-
-        document.getElementById("countHadir").innerText = counts.Hadir;
-        document.getElementById("countIzin").innerText = counts.Izin;
-        document.getElementById("countSakit").innerText = counts.Sakit;
-        document.getElementById("countAlfa").innerText = counts.Alfa;
-        document.getElementById("total").innerText = dataAbsensi.length;
     }
 
-    function hapusData(id) {
-        if(confirm("Hapus data?")) {
-            dataAbsensi = dataAbsensi.filter(x => x.id !== id);
-            localStorage.setItem("absensi_hq", JSON.stringify(dataAbsensi));
-            renderTable();
+    function getWarna(s) {
+        if(s==='Hadir') return '#10b981';
+        if(s==='Izin') return '#f59e0b';
+        if(s==='Sakit') return '#3b82f6';
+        return '#ef4444';
+    }
+
+    function hapus(id) {
+        if(confirm("Hapus data ini?")) {
+            db = db.filter(x => x.id !== id);
+            localStorage.setItem("db_hq_vertical", JSON.stringify(db));
+            render();
         }
     }
 
-    function resetSemuaData() {
-        if(confirm("Reset semua?")) {
-            dataAbsensi = [];
-            localStorage.removeItem("absensi_hq");
-            renderTable();
+    function resetData() {
+        if(confirm("Hapus seluruh riwayat?")) {
+            db = [];
+            localStorage.removeItem("db_hq_vertical");
+            render();
         }
     }
 
-    function downloadPDF() {
+    function eksporPDF() {
+        if(db.length === 0) return alert("Tidak ada data");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("Laporan Absensi SMP HQ", 14, 15);
-        const rows = dataAbsensi.map((x, i) => [i+1, x.nama, x.kelas, x.formatTgl, x.status]);
-        doc.autoTable({ head: [['No', 'Nama', 'Kelas', 'Tanggal', 'Status']], body: rows, startY: 20 });
-        doc.save("Absensi.pdf");
+        doc.text("Laporan Presensi SMP Hamalatul Quran", 14, 15);
+        const rows = db.map((x, i) => [i+1, x.nama, x.hari, x.tgl, x.status, x.ket]);
+        doc.autoTable({ 
+            head: [['No', 'Nama', 'Hari', 'Tgl', 'Status', 'Keterangan']], 
+            body: rows, 
+            startY: 22,
+            headStyles: { fillColor: [79, 70, 229] }
+        });
+        doc.save("Presensi_HQ_Mobile.pdf");
     }
+
+    render();
 </script>
 
 </body>
