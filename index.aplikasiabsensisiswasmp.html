@@ -51,6 +51,7 @@
             border-bottom-right-radius: 25px;
             margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .container { padding: 0 15px; max-width: 600px; margin: auto; }
@@ -91,7 +92,7 @@
         .stat-card h4 { font-size: 12px; opacity: 0.9; font-weight: 400; }
         .stat-card h2 { font-size: 22px; }
 
-        /* MOBILE LIST VIEW (Ganti Tabel) */
+        /* MOBILE LIST VIEW (Pengganti Tabel) */
         .data-item {
             background: white; padding: 15px; border-radius: 15px;
             margin-bottom: 12px; border-left: 5px solid var(--primary);
@@ -146,7 +147,7 @@
         <div class="glass-card">
             <div class="input-group">
                 <label>NAMA SISWA</label>
-                <input type="text" id="nama" placeholder="Ketik nama...">
+                <input type="text" id="nama" placeholder="Ketik nama lengkap...">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -189,7 +190,7 @@
             <div class="stat-card bg-alfa"><h4>Alfa</h4><h2 id="countAlfa">0</h2></div>
         </div>
 
-        <!-- LIST DATA (Ganti Tabel) -->
+        <!-- LIST DATA (Mobile Friendly Cards) -->
         <div id="data-list">
             <!-- Data akan muncul di sini -->
         </div>
@@ -199,7 +200,7 @@
             <button class="btn btn-danger-outline" onclick="resetSemuaData()">Reset All</button>
             <button class="btn btn-success" onclick="downloadPDF()">Cetak PDF</button>
         </div>
-        <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:20px;">Total: <span id="total">0</span> Data Tersimpan</p>
+        <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:20px; margin-bottom:20px;">Total: <span id="total">0</span> Data Tersimpan</p>
     </div>
 </div>
 
@@ -286,9 +287,9 @@
             card.innerHTML = `
                 <div class="data-info">
                     <h4>${item.nama}</h4>
-                    <p>Kelas ${item.kelas} • <span style="color:${getStatusColor(item.status)}">${item.status}</span></p>
+                    <p>Kelas ${item.kelas} • <span style="color:${getStatusColor(item.status)}; font-weight:bold">${item.status}</span></p>
                 </div>
-                <button onclick="hapusData(${item.id})" style="background:none; border:none; color:#cbd5e1; font-size:18px;">&times;</button>
+                <button onclick="hapusData(${item.id})" style="background:none; border:none; color:#cbd5e1; font-size:24px; padding:10px;">&times;</button>
             `;
             container.appendChild(card);
             counts[item.status]++;
